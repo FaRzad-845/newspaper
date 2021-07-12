@@ -14,7 +14,7 @@ import logging
 
 from .parsers import Parser
 from .text import (StopWords, StopWordsArabic, StopWordsChinese,
-                   StopWordsKorean, StopWordsHindi, StopWordsJapanese, StopWordsThai)
+                   StopWordsKorean, StopWordsHindi, StopWordsJapanese)
 from .version import __version__
 
 log = logging.getLogger(__name__)
@@ -69,10 +69,14 @@ class Configuration(object):
         self.proxies = {}
         self.number_threads = 10
 
-        self.verbose = False  # for debugging
+        self.verbose = True  # for debugging
 
         self.thread_timeout_seconds = 1
-        self.ignored_content_types_defaults = {}
+
+        self.with_dns_cache = False
+
+        self.dns_name_servers = ['127.0.0.1']
+
         # Set this to False if you want to recompute the categories
         # *every* time you build a `Source` object
         # TODO: Actually make this work
@@ -116,8 +120,6 @@ class Configuration(object):
             return StopWordsArabic
         elif language == 'ja':
             return StopWordsJapanese
-        elif language == 'th':
-            return StopWordsThai
         return StopWords
 
     @staticmethod
